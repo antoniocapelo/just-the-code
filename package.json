@@ -11,6 +11,9 @@
     "test": "npm run lint",
     "watch": "npm run build && chokidar 'src/**/*' 'package.json' '.babelrc' -c 'npm run build' --verbose"
   },
+   "bin": {
+     "just-the-code": "dist/index.js"
+   },
   "author": "António Capelo<antonio.c.capelo@gmail.com>",
   "homepage": "https://github.com/antoniocapelo/just-the-code",
   "bugs": "https://github.com/antoniocapelo/just-the-code/issues",
