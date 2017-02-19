@@ -1,7 +1,7 @@
 {
   "name": "just-the-code",
   "description": "Just the code. Strip a project folders from its dependencies (bower/npm) and git (optional) and compress it to pass to a friend.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "keywords": [],
   "scripts": {
     "build": "npm run clean && babel src --out-dir ./dist --source-maps inline && chmod +x dist/index.js",
