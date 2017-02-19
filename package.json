@@ -32,6 +32,7 @@
     "rimraf": "^2.5.4"
   },
   "dependencies": {
+    "babel-polyfill": "^6.23.0",
     "fs-extra": "^2.0.0",
     "ncp": "^2.0.0",
     "planify": "^1.5.0",
