@@ -12,7 +12,7 @@
     "watch": "npm run build && chokidar 'src/**/*' 'package.json' '.babelrc' -c 'npm run build' --verbose"
   },
   "bin": {
-    "just-the-code": "dist/index.js"
+    "just-the-code": "./dist/index.js"
   },
   "author": "António Capelo<antonio.c.capelo@gmail.com>",
   "homepage": "https://github.com/antoniocapelo/just-the-code",
