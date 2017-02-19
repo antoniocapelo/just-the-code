@@ -87,7 +87,7 @@ function removeUnnecessary(data, done) {
 }
 
 function compress(data, done) {
-    const srcFolder = path.resolve(argv.name);
+    const srcFolder = path.resolve(buildTempFolderName(argv.name));
     const destinyZip = path.resolve(`${argv.name}.zip`);
 
 
