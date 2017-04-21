@@ -6,9 +6,10 @@ const yargs = require('yargs');
 const planify = require('planify');
 const fs = require('fs-extra');
 const path = require('path');
-const zipFolder = require('zip-folder');
 const CWD = './';
-const DEP_FOLDERS = ['bower_components', 'node_modules'];
+const foldersToRemove = ['bower_components', 'node_modules'];
+const archiver = require('archiver');
+
 
 // ---------------------------------------------------------
 // CLI definition
@@ -37,29 +38,36 @@ const argv = yargs
 // ---------------------------------------------------------
 
 function buildTempFolderName(archiveName) {
-    return `./.tmp.${archiveName}`;
+    // return `.tmp.${archiveName}/`;
+    return `tmp-${archiveName}/`;
 }
 
 function removePreviousBuild() {
     const zipFile = path.resolve(`${argv.name}.zip`);
 
     if (fs.existsSync(zipFile)) {
-        fs.removeSync(zipFile);
-        process.stdout.write(`\nRemoved ${argv.name}.zip\n`);
+        fs.unlink(zipFile, (err) => {
+            if (err) {
+                throw err;
+            }
+
+            process.stdout.write(`\nRemoved ${argv.name}.zip\n`);
+        });
     } else {
         process.stdout.write(`\nNo ${argv.name}.zip file found. Skipping...\n`);
     }
 }
 
 function copyFolder(data, done) {
-    const src = path.resolve(argv._[0]);
+    const src = argv._[0];
+    const srcPath = path.resolve(src);
     const destination = buildTempFolderName(argv.name);
 
-    if (src === path.resolve(CWD)) {
+    if (srcPath === path.resolve(CWD)) {
         throw new Error('Invalid path: must not be current working directory!');
     }
 
-    fs.copy(src, destination, (err) => {
+    fs.copy(srcPath, destination, (err) => {
         if (err) {
             throw new Error(err);
         }
@@ -71,11 +79,11 @@ function copyFolder(data, done) {
 
 function removeUnnecessary(data, done) {
     if (argv.git) {
-        DEP_FOLDERS.push('.git');
-        DEP_FOLDERS.push('.gitignore');
+        foldersToRemove.push('.git');
+        foldersToRemove.push('.gitignore');
     }
 
-    DEP_FOLDERS.forEach((folder) => {
+    foldersToRemove.forEach((folder) => {
         const archiveFolder = path.resolve(buildTempFolderName(argv.name));
         const folderToRemove = path.resolve(archiveFolder, folder);
 
@@ -87,18 +95,23 @@ function removeUnnecessary(data, done) {
 }
 
 function compress(data, done) {
-    const srcFolder = path.resolve(buildTempFolderName(argv.name));
+    const srcFolder = buildTempFolderName(argv.name);
     const destinyZip = path.resolve(`${argv.name}.zip`);
+    const output = fs.createWriteStream(destinyZip);
+    const archive = archiver('zip');
 
-
-    zipFolder(srcFolder, destinyZip, (err) => {
-        if (err) {
-            throw new Error('Error while creating zip file');
-        } else {
-            process.stdout.write('\nSuccess!\n');
-            done();
-        }
+    output.on('close', () => {
+        process.stdout.write(`${archive.pointer()} total bytes archived`);
+        done();
     });
+
+    archive.on('error', (err) => {
+        throw err;
+    });
+
+    archive.pipe(output);
+    archive.directory(path.resolve(srcFolder), '');
+    archive.finalize();
 }
 
 function removeTemp(data, done) {
@@ -117,6 +130,6 @@ planify({ exit: true, reporter: argv.reporter })
 .step('Copying folder to temp folder', copyFolder)
 .step('Removing dependency folders', removeUnnecessary)
 .step('Compressing copied folder', compress)
-.step('Removing the temporary folder', removeTemp)
+// .step('Removing the temporary folder', removeTemp)
 .run();
 
