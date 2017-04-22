@@ -6,7 +6,6 @@ const yargs = require('yargs');
 const planify = require('planify');
 const fs = require('fs-extra');
 const path = require('path');
-const CWD = './';
 const foldersToRemove = ['bower_components', 'node_modules'];
 const archiver = require('archiver');
 
@@ -63,7 +62,7 @@ function copyFolder(data, done) {
     const srcPath = path.resolve(src);
     const destination = buildTempFolderName(argv.name);
 
-    if (srcPath === path.resolve(CWD)) {
+    if (srcPath === process.cwd()) {
         throw new Error('Invalid path: must not be current working directory!');
     }
 
@@ -130,6 +129,6 @@ planify({ exit: true, reporter: argv.reporter })
 .step('Copying folder to temp folder', copyFolder)
 .step('Removing dependency folders', removeUnnecessary)
 .step('Compressing copied folder', compress)
-// .step('Removing the temporary folder', removeTemp)
+.step('Removing the temporary folder', removeTemp)
 .run();
 
