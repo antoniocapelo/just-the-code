@@ -4,6 +4,12 @@ const util = require('./util');
 
 const foldersToRemove = ['bower_components', 'node_modules'];
 
+/**
+ * Removes the previous compressed file.
+ *
+ * @param {String} fileName - existing file name.
+ *
+ */
 function previousBuild(fileName) {
     const zipFile = path.resolve(`${fileName}.zip`);
 
@@ -20,6 +26,15 @@ function previousBuild(fileName) {
     }
 }
 
+/**
+ * Removes unnecessary files (bower/node) from temporary folder.
+ *
+ * @param {String} name - target name.
+ * @param {Boolean} gitFlag - wether to remove git-related files.
+ * @param {Object} [data] - Planify passed data.
+ * @param {Function} done - Planify 'done' callback.
+ *
+ */
 function unnecessary(name, gitFlag, data, done) {
     if (gitFlag) {
         foldersToRemove.push('.git');
@@ -37,6 +52,14 @@ function unnecessary(name, gitFlag, data, done) {
     done();
 }
 
+/**
+ * Removes temporary folder.
+ *
+ * @param {String} name - temporary folder name.
+ * @param {Object} [data] - Planify passed data.
+ * @param {Function} done - Planify 'done' callback.
+ *
+ */
 function temporary(name, data, done) {
     const tmpFolder = path.resolve(util.buildTempFolderName(name));
 

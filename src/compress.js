@@ -3,6 +3,14 @@ const path = require('path');
 const archiver = require('archiver');
 const util = require('./util');
 
+/**
+ * Compresses the temporary folder into a [name].zip file.
+ *
+ * @param {String} name - desired compressed file name.
+ * @param {Object} [data] - Planify passed data.
+ * @param {Function} done - Planify 'done' callback.
+ *
+ */
 export default function compress(name, data, done) {
     const srcFolder = util.buildTempFolderName(name);
     const destinyZip = path.resolve(`${name}.zip`);
