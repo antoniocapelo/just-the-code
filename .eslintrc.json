@@ -4,5 +4,9 @@
         "eslint-config-moxy/es8.js",
         "eslint-config-moxy/addons/browser.js",
         "eslint-config-moxy/addons/node.js"
-    ]
+    ],
+    "globals": {
+        "describe": true,
+        "it": true,
+    }
 }
