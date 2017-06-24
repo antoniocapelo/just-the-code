@@ -1,7 +1,7 @@
 {
   "name": "just-the-code",
   "description": "Just the code. Strip a project folders from its dependencies (bower/npm) and git (optional) and compress it to pass to a friend.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "keywords": [],
   "scripts": {
     "build": "npm run clean && babel src --out-dir ./dist --source-maps inline && chmod +x dist/index.js",
@@ -15,7 +15,12 @@
   "jest": {
     "collectCoverage": true,
     "bail": false,
-    "collectCoverageFrom" : ["**/*.{js,jsx}",  "!**/coverage/**", "!**/node_modules/**", "!**/dist/**/*.js"]
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/coverage/**",
+      "!**/node_modules/**",
+      "!**/dist/**/*.js"
+    ]
   },
   "bin": {
     "just-the-code": "./dist/index.js"
