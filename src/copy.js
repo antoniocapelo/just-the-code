@@ -21,10 +21,11 @@ export default function copyFolder(src, name, data, done) {
 
     fs.copy(srcPath, destination, (err) => {
         if (err) {
-            throw new Error(err);
+            fs.removeSync(path.resolve(destination));
+        } else {
+            process.stdout.write('\nSuccess!\n');
         }
 
-        process.stdout.write('\nSuccess!\n');
-        done();
+        done(err);
     });
 }

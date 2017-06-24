@@ -6,7 +6,11 @@
         "eslint-config-moxy/addons/node.js"
     ],
     "globals": {
+        "jest": true,
         "describe": true,
-        "it": true,
+        "expect": true,
+        "beforeAll": true,
+        "afterAll": true,
+        "it": true
     }
 }

@@ -10,6 +10,8 @@ const util = require('./util');
  * @param {Object} [data] - Planify passed data.
  * @param {Function} done - Planify 'done' callback.
  *
+ * @returns {Object} Archiver object.
+ *
  */
 export default function compress(name, data, done) {
     const srcFolder = util.buildTempFolderName(name);
@@ -17,17 +19,24 @@ export default function compress(name, data, done) {
     const output = fs.createWriteStream(destinyZip);
     const archive = archiver('zip');
 
+    if (!fs.existsSync(path.resolve(srcFolder))) {
+        throw new Error('Source folder does not exist');
+    }
+
     output.on('close', () => {
         process.stdout.write(`${archive.pointer()} total bytes archived`);
         done();
     });
 
     archive.on('error', (err) => {
-        throw err;
+        process.stdout.write(`An error occurred: ${err}`);
+        fs.removeSync(path.resolve(destinyZip));
+        done(new Error(`Archiver error: ${err}`));
     });
 
     archive.pipe(output);
     archive.directory(path.resolve(srcFolder), '');
     archive.finalize();
+    return archive;
 }
 

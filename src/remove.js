@@ -13,14 +13,10 @@ const foldersToRemove = ['bower_components', 'node_modules'];
 function previousBuild(fileName) {
     const zipFile = path.resolve(`${fileName}.zip`);
 
+    console.log('zipfile', zipFile);
     if (fs.existsSync(zipFile)) {
-        fs.unlink(zipFile, (err) => {
-            if (err) {
-                throw err;
-            }
-
-            process.stdout.write(`\nRemoved ${fileName}.zip\n`);
-        });
+        fs.removeSync(zipFile);
+        process.stdout.write(`\nRemoved ${fileName}.zip\n`);
     } else {
         process.stdout.write(`\nNo ${fileName}.zip file found. Skipping...\n`);
     }
