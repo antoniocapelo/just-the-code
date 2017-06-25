@@ -12,4 +12,3 @@ describe('buildTempFolderName method', () => {
     });
 });
 
-
