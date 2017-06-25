@@ -1,7 +1,7 @@
 {
   "name": "just-the-code",
   "description": "Just the code. Compress a folder but first removes its dependencies (bower/npm) and git files (optional).",
-  "version": "0.0.6",
+  "version": "1.0.0",
   "keywords": [],
   "scripts": {
     "build": "npm run clean && babel src --out-dir ./dist --source-maps inline && chmod +x dist/index.js",
