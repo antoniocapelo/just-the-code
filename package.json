@@ -1,6 +1,6 @@
 {
   "name": "just-the-code",
-  "description": "Just the code. Strip a project folders from its dependencies (bower/npm) and git (optional) and compress it to pass to a friend.",
+  "description": "Just the code. Compress a folder but first removes its dependencies (bower/npm) and git files (optional).",
   "version": "0.0.6",
   "keywords": [],
   "scripts": {
@@ -51,7 +51,6 @@
     "fs-extra": "^2.0.0",
     "ncp": "^2.0.0",
     "planify": "^1.5.0",
-    "yargs": "^6.6.0",
-    "zip-folder": "^1.0.0"
+    "yargs": "^6.6.0"
   }
 }
